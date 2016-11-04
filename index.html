@@ -1,39 +1,59 @@
- <html>
- <head>
-   <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.3/p5.js"></script>
-   <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.4/addons/p5.sound.js"></script>
-   <script>
-    
-    // an example using sound (which is not required for this assignment)
+<html>
 
-    var sound;
-    
-    function preload() 
-    {
-      sound = loadSound('pop.mp3');
-    }
-    
-    function setup() 
-    {
-       createCanvas(800, 600);
-       textAlign(CENTER);
-       fill(100);
-       noStroke();
-       text("Click to play sound", width/2, height/2);
-    }
+<head>
+    <meta charset="UTF-8">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.3/p5.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.3/addons/p5.sound.js"></script>
+    <script>
+        var sound;
+        var amplitude;
+        var x = [];
+        var y = [];
+        var speed;
+        var xdir = [];
+        var ydir = [];
+        var a = [];
 
-    function draw() 
-    {
-     
-    }
-    
-    function mouseClicked() 
-    { 
-       sound.play();
-       background(random(255), random(255), random(255));
-    }
+        function preload() {
+            sound = loadSound("water.mp3")
 
-   </script>
- </head>
- </html>
+            x[0] = 300;
+            y[0] = 300;
+            xdir[0] = random(-1, 1);
+            ydir[0] = random(-1, 1);
+            a[0] = random(25,255);
+
+        }
+
+        function setup() {
+            createCanvas(600, 600);
+            sound.loop();
+            amplitude = new p5.Amplitude();
+            amplitude.setInput(sound);
+            noStroke();
+        }
+
+        function draw() {
+            background(0);
+            var level = amplitude.getLevel();
+            speed = map(level, 0, 1, 1, 15);
+            for (var i = 0; i < x.length; i++) {
+                fill(255, 255, 255, a[i]);
+                ellipse(x[i], y[i], 20, 20);
+                x[i] += xdir[i] * speed;
+                y[i] += ydir[i] * speed;
+            }
+            if (frameCount % 15 == 0) {
+                x[x.length] = 300;
+                y[y.length] = 300;
+                xdir[xdir.length] = random(-1, 1);
+                ydir[ydir.length] = random(-1, 1);
+                a[a.length] = random(25,255);
+            }
+
+        }
+    </script>
+</head>
+
+</html>
 
